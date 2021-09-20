@@ -49,7 +49,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES) -DBCMHOST
 
 LOCAL_SRC_FILES := \
     src/loader/vk_loader.cpp \
-    src/GL/api/gl.cpp \
+#    src/GL/api/gl.cpp \
     src/GL/api/eglInterface.cpp \
     src/GL/context/context.cpp \
     src/GL/context/contextBufferObject.cpp \
