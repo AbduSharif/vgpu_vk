@@ -8,23 +8,32 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE:= egl_vk
-LOCAL_CXXFLAGS:=-std=c++11 -fno-exceptions -frtti
+LOCAL_MODULE:= egl
+LOCAL_CFLAGS:= -g -std=c++11 -frtti
 
 LOCAL_CFLAGS += -DVK_USE_PLATFORM_ANDROID_KHR
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/src/EGL/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/src/EGL/source
-LOCAL_EXPORT_C_INCLUDES:= $(LOCAL_C_INCLUDES) -DBCMHOST
+#LOCAL_EXPORT_C_INCLUDES:= $(LOCAL_C_INCLUDES) -DBCMHOST
 
 LOCAL_SRC_FILES:= \
     src/loader/vk_loader.cpp \
+    src/EGL/source/api/eglContext.cpp \
+    src/EGL/source/api/eglConfig.cpp \
     src/EGL/source/api/egl.cpp \
-    src/EGL/source/vulkan/vk_wrapper.cpp \
-    src/EGL/source/vulkan/vk_global.cpp \
-    src/EGL/source/utils/egl_state.cpp \
-    src/EGL/source/utils/ctx.cpp
+    src/EGL/source/api/eglSurface.cpp \
+    src/EGL/source/display/displayDriver.cpp \
+    src/EGL/source/display/displayDriversContainer.cpp \
+    src/EGL/source/thread/renderingThread.cpp \
+    src/EGL/source/platform/platformFactory.cpp \
+    src/EGL/source/platform/vulkan/WSIPlaneDisplay.cpp \
+    src/EGL/source/platform/vulkan/vulkanWindowInterface.cpp \
+    src/EGL/source/platform/vulkan/vulkanWSI.cpp \
+    src/EGL/source/platform/vulkan/vulkanAPI.cpp \
+    src/EGL/source/rendering_api/rendering_api.cpp \
+    src/EGL/source/utils/eglLogger.cpp
 
 LOCAL_LDLIBS := -ldl -llog
 
@@ -38,18 +47,18 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := vgpu_vk
+LOCAL_MODULE := vgpu
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/glslang/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/src/GL
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/src/EGL/include
 
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES) -DBCMHOST
+#LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES) -DBCMHOST
 
 LOCAL_SRC_FILES := \
     src/loader/vk_loader.cpp \
-#    src/GL/api/gl.cpp \
+    src/GL/api/gl.cpp \
     src/GL/api/eglInterface.cpp \
     src/GL/context/context.cpp \
     src/GL/context/contextBufferObject.cpp \
@@ -124,11 +133,11 @@ LOCAL_CFLAGS += -DVK_USE_PLATFORM_ANDROID_KHR
 LOCAL_LDLIBS := -ldl -llog -lm
 #building as a shared lib
 
-LOCAL_SHARED_LIBRARIES := OSDependent
-LOCAL_SHARED_LIBRARIES += OGLCompiler
-LOCAL_SHARED_LIBRARIES += HLSL
-LOCAL_SHARED_LIBRARIES += glslang
-LOCAL_SHARED_LIBRARIES += SPIRV
+LOCAL_STATIC_LIBRARIES := OSDependent
+LOCAL_STATIC_LIBRARIES += OGLCompiler
+LOCAL_STATIC_LIBRARIES += HLSL
+LOCAL_STATIC_LIBRARIES += glslang
+LOCAL_STATIC_LIBRARIES += SPIRV
 
 include $(BUILD_SHARED_LIBRARY)
 

@@ -40,11 +40,11 @@ Context::GetString(GLenum name)
 {
     FUN_ENTRY(GL_LOG_DEBUG);
 
-    static const char *strings[] {"GLOVE (GL Over Vulkan)\0",
-                                  "OpenGL ES 2.0 Over Vulkan\0",
-                                  "OpenGL ES 2.0\0",
-                                  "OpenGL ES GLSL ES 1.00\0",
-                                  "GL_OES_get_program_binary\0"};
+    static const char *strings[] {"GLOVE (GL Over Vulkan)",
+                                  "OpenGL ES 2.0 Over Vulkan",
+                                  "OpenGL ES 2.0",
+                                  "OpenGL ES GLSL ES 1.00",
+                                  "GL_OES_get_program_binary"};
     switch(name) {
     case GL_VENDOR:                     return (const GLubyte *)strings[0];
     case GL_RENDERER:                   return (const GLubyte *)strings[1];
