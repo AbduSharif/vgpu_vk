@@ -30,6 +30,7 @@
 #include "context.h"
 #include "cbManager.h"
 
+
 namespace vulkanAPI {
 
 #define ARRAY_SIZE(array)   (int)(sizeof(array) / sizeof(array[0]))

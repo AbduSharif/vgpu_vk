@@ -23,6 +23,26 @@
 
 #include "context/context.h"
 
+//Context *currentContext;
+
+#define REDO_CTX \
+	context = GetCurrentContext();
+
+#ifdef FUNC_DEBUG
+#define CONTEXT_EXEC(func)          FUN_ENTRY(GL_LOG_INFO);                      \
+                                             printf("GL: Callimg: " #func "\n" ); \
+                                    Context * context = GetCurrentContext();     \
+                                    printf("FUNC_DEBUG: context = ""%p\n", context); \
+                                    if (context) {                               \
+                                        context->func;                           \
+                                    }
+
+#define CONTEXT_EXEC_RETURN(func)   FUN_ENTRY(GL_LOG_INFO);                      \
+                                             printf("GL: Callimg: " #func "\n" ); \
+                                    Context * context = GetCurrentContext();     \
+                                    printf("FUNC_DEBUG: context = ""%p\n", context); \
+                                    return context ? context->func : 0;
+#else
 #define CONTEXT_EXEC(func)          FUN_ENTRY(GL_LOG_INFO);                      \
                                     Context * context = GetCurrentContext();     \
                                     if (context) {                               \
@@ -32,6 +52,8 @@
 #define CONTEXT_EXEC_RETURN(func)   FUN_ENTRY(GL_LOG_INFO);                      \
                                     Context * context = GetCurrentContext();     \
                                     return context ? context->func : 0;
+#endif
+
 
 GL_APICALL void GL_APIENTRY
 glActiveTexture(GLenum texture)

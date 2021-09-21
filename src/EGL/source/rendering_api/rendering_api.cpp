@@ -53,6 +53,7 @@ static void rendering_api_cache_interface(rendering_api_interface_t* api_interfa
 {
     switch(api) {
         case EGL_OPENGL_ES_API:
+        case EGL_OPENGL_API:
             if(EGL_GL_VERSION_1 == client_version) {
                 gles1_interface = api_interface;
 
@@ -80,20 +81,22 @@ static rendering_api_return_e rendering_api_get_api_interface(const char *librar
     if(true == library_info->initialized) {
         return RENDERING_API_ALREADY_INIT;
     }
-
+	
+	printf("EGLInterface: dlopen: ""%s\n", library_name);
     library_info->handle = dlopen(library_name, RTLD_NOW);
     if(!library_info->handle) {
-        fprintf(stderr, "%s\n", dlerror());
+        fprintf(stderr, "dlopen: ""%s\n", dlerror());
         return RENDERING_API_NOT_FOUND;
     }
 
     dlerror();
-
+    
+    printf("EGLInterface: dlsym: ""%s\n", api_interface_name);
     api_interface = (rendering_api_interface_t *) dlsym(library_info->handle, api_interface_name);
 
     error = dlerror();
     if(error)  {
-        fprintf(stderr, "%s\n", error);
+        fprintf(stderr, "dlsym: ""%s\n", error);
         return RENDERING_API_NOT_FOUND;
     }
 
@@ -117,6 +120,7 @@ rendering_api_return_e RENDERING_API_init_api(EGLenum api, uint32_t client_versi
 
     switch(api) {
         case EGL_OPENGL_ES_API:
+        case EGL_OPENGL_API:
             if(EGL_GL_VERSION_1 == client_version) {
                 api_library_name = "libGLESv1_CM.so";
                 api_interface_name = "GLES1Interface";
@@ -128,7 +132,7 @@ rendering_api_return_e RENDERING_API_init_api(EGLenum api, uint32_t client_versi
                 api_interface = gles2_interface;
                 library_info = &gles2_library_info;
             }
-            api_library_name = "libvgpu.so";
+            api_library_name = "libGLESv2_angle.so";
             break;
         case EGL_OPENVG_API:
             api_library_name = "libVG.so";

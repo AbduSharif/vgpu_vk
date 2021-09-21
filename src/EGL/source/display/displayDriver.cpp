@@ -63,7 +63,12 @@ DisplayDriver::Initialize(EGLDisplay dpy, EGLint *major, EGLint *minor)
 
     PlatformFactory::ChoosePlatform();
     mWindowInterface = PlatformFactory::GetWindowInterface();
-
+	
+	if (mWindowInterface == nullptr) {
+		printf("mWindowInterface = NULL!\n");
+		return EGL_TRUE;
+	}
+	
     if(EGL_FALSE == mWindowInterface->Initialize()) {
         return SetErrorAndReturn(EGL_NOT_INITIALIZED);
     }
@@ -340,8 +345,9 @@ EGLBoolean
 DisplayDriver::SwapBuffers(EGLDisplay dpy, EGLSurface surface)
 {
     FUN_ENTRY(DEBUG_DEPTH);
-
-    assert(surface);
+	
+	printf("SwapBuffers: surface = ""%p\n", surface);
+    //assert(surface);
 
     EGLSurface_t *eglSurface = reinterpret_cast<EGLSurface_t *>(surface);
     uint32_t imageIndex = 0;

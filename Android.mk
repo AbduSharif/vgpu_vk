@@ -8,9 +8,12 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE:= egl
+LOCAL_MODULE:= egl_vk
+
 LOCAL_CFLAGS:= -g -std=c++11 -frtti
 
+LOCAL_CFLAGS += -DFUNC_DEBUG
+#LOCAL_CFLAGS += -DDEBUG
 LOCAL_CFLAGS += -DVK_USE_PLATFORM_ANDROID_KHR
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
@@ -29,6 +32,7 @@ LOCAL_SRC_FILES:= \
     src/EGL/source/thread/renderingThread.cpp \
     src/EGL/source/platform/platformFactory.cpp \
     src/EGL/source/platform/vulkan/WSIPlaneDisplay.cpp \
+    src/EGL/source/platform/vulkan/WSIAndroid.cpp \
     src/EGL/source/platform/vulkan/vulkanWindowInterface.cpp \
     src/EGL/source/platform/vulkan/vulkanWSI.cpp \
     src/EGL/source/platform/vulkan/vulkanAPI.cpp \
@@ -47,7 +51,7 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := vgpu
+LOCAL_MODULE := vgpu_vk
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/glslang/include
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
@@ -127,7 +131,10 @@ LOCAL_SRC_FILES := \
 LOCAL_CFLAGS = -g -fexceptions -frtti -std=c++11 -Wall
 #LOCAL_CFLAGS += -D_GLIBCXX_USE_CXX11_ABI=0
 #LOCAL_CFLAGS += -O3
-LOCAL_CFLAGS += -funwind-tables -fvisibility=hidden
+#LOCAL_CFLAGS += -funwind-tables -fvisibility=hidden
+
+LOCAL_CFLAGS += -DFUNC_DEBUG
+#LOCAL_CFLAGS += -DDEBUG
 LOCAL_CFLAGS += -DVK_USE_PLATFORM_ANDROID_KHR
 
 LOCAL_LDLIBS := -ldl -llog -lm

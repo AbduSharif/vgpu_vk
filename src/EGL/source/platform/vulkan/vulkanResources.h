@@ -25,7 +25,7 @@
 #define __VULKAN_RESOURCES_H__
 
 #include "platform/platformResources.h"
-#include <vulkan/vulkan.h>
+#include "vulkan/vulkan.h"
 
 class VulkanResources : public PlatformResources
 {

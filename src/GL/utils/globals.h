@@ -64,6 +64,14 @@ using namespace std;
 #endif // __GNUC__
 
 // Code
+#ifndef DEBUG
+#   define NOT_REACHED()                                printf("You shouldn't be here. (function %s at line %d of file %s)\n", __func__, __LINE__, __FILE__)
+#   define NOT_IMPLEMENTED()                            printf("Function %s (line %d of file %s) not implemented yet.\n", __func__, __LINE__, __FILE__)
+#else
+#   define NOT_REACHED()                                assert(0 && "You shouldn't be here.")
+#   define NOT_IMPLEMENTED()                            assert(0 && "Function not implemented yet.")
+#endif // NDEBUG
+/*
 #ifdef NDEBUG
 #   define NOT_REACHED()                                printf("You shouldn't be here. (function %s at line %d of file %s)\n", __func__, __LINE__, __FILE__)
 #   define NOT_IMPLEMENTED()                            printf("Function %s (line %d of file %s) not implemented yet.\n", __func__, __LINE__, __FILE__)
@@ -71,6 +79,7 @@ using namespace std;
 #   define NOT_REACHED()                                assert(0 && "You shouldn't be here.")
 #   define NOT_IMPLEMENTED()                            assert(0 && "Function not implemented yet.")
 #endif // NDEBUG
+*/
 
 // GL_FIXED
 #define GLOVE_FIXED_PRECISION                           16
@@ -91,10 +100,11 @@ using namespace std;
 #define GLOVE_MAX_COMBINED_TEXTURE_IMAGE_UNITS          (GLOVE_MAX_VERTEX_TEXTURE_IMAGE_UNITS + GLOVE_MAX_TEXTURE_IMAGE_UNITS)
 
 #define GLOVE_MAX_DRAW_BUFFERS                          8     // MIN VALUE:  1
+#define GLOVE_MAX_COLOR_ATTACHMENTS                          8     // MIN VALUE:  1
 
-#define GLOVE_MAX_TEXTURE_SIZE                          4096
+#define GLOVE_MAX_TEXTURE_SIZE                          16384
 #define GLOVE_MAX_CUBE_MAP_TEXTURE_SIZE                 4096
-#define GLOVE_MAX_RENDERBUFFER_SIZE                     4096
+#define GLOVE_MAX_RENDERBUFFER_SIZE                     16384
 
 #define GLOVE_NO_BUFFER_TO_WAIT                         0x7FFFFFFF
 #define GLOVE_NUM_VK_COMMAND_BUFFERS                    2

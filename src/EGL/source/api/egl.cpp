@@ -33,6 +33,22 @@
 
 static RenderingThread currentThread;
 
+#ifdef FUNC_DEBUG
+#define THREAD_EXEC_RETURN(func)             FUN_ENTRY(DEBUG_DEPTH);                                                        \
+                                             printf("EGL: Callimg: " #func "\n" ); \
+                                             return currentThread.func;
+
+#define DRIVER_EXEC(display, func)           FUN_ENTRY(DEBUG_DEPTH);                                                        \
+                                             printf("EGL: Callimg: " #func "\n" ); \
+                                             DisplayDriver *eglDriver = DisplayDriversContainer::GetDisplayDriver(display); \
+                                             eglDriver->func;
+
+#define DRIVER_EXEC_RETURN(display, func)    FUN_ENTRY(DEBUG_DEPTH);                                                        \
+                                             printf("EGL: Callimg: " #func "\n" ); \
+                                             DisplayDriver *eglDriver = DisplayDriversContainer::GetDisplayDriver(display); \
+                                             return eglDriver ? eglDriver->func : 0;
+
+#else
 #define THREAD_EXEC_RETURN(func)             FUN_ENTRY(DEBUG_DEPTH);                                                        \
                                              return currentThread.func;
 
@@ -43,6 +59,8 @@ static RenderingThread currentThread;
 #define DRIVER_EXEC_RETURN(display, func)    FUN_ENTRY(DEBUG_DEPTH);                                                        \
                                              DisplayDriver *eglDriver = DisplayDriversContainer::GetDisplayDriver(display); \
                                              return eglDriver ? eglDriver->func : 0;
+#endif
+
 
 static void cleanUpResources()
 {
@@ -186,15 +204,15 @@ eglQueryString(EGLDisplay dpy, EGLint name)
     FUN_ENTRY(DEBUG_DEPTH);
 
     switch(name) {
-    case EGL_CLIENT_APIS:   return "EGL_OPENGL_ES_API EGL_OPENGL_API\0"; break;
-    case EGL_VENDOR:        return "vgpu_vk (GL Over VK)\0"; break;
-    case EGL_VERSION:       return "1.4\0"; break;
+    case EGL_CLIENT_APIS:   return "EGL_OPENGL_ES_API EGL_OPENGL_API"; break;
+    case EGL_VENDOR:        return "GLOVE (GL Over Vulkan)"; break;
+    case EGL_VERSION:       return "1.4"; break;
 #ifdef VK_USE_PLATFORM_ANDROID_KHR
-    case EGL_EXTENSIONS:    return "EGL_KHR_image_base EGL_ANDROID_image_native_buffer\0"; break;
+    case EGL_EXTENSIONS:    return "EGL_KHR_image_base EGL_ANDROID_image_native_buffer"; break;
 #else
-    case EGL_EXTENSIONS:    return "\0"; break;
+    case EGL_EXTENSIONS:    return ""; break;
 #endif
-    default:                return "\0"; break;
+    default:                return ""; break;
     }
 
     return "\0";

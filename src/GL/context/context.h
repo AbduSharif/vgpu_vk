@@ -34,6 +34,8 @@
 #include "vulkan/context.h"
 #include "rendering_api_interface.h"
 
+#include "gl_context/get.h"
+
 typedef enum {
     GLOVE_HOST_X86_BINARY = 1,
     GLOVE_HOST_ARM_BINARY,
@@ -41,8 +43,9 @@ typedef enum {
     GLOVE_MAX_BINARY_FORMATS
 } glove_program_binary_formats_e;
 
-Context    *GetCurrentContext(void);
-void        SetCurrentContext(Context *ctx);
+extern Context *currentContext;
+extern Context    *GetCurrentContext(void);
+extern void        SetCurrentContext(Context *ctx);
 
 class Context {
 

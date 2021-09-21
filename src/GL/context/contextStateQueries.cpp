@@ -150,6 +150,11 @@ Context::GetIntegerv(GLenum pname, GLint* params)
     case GL_MAX_CUBE_MAP_TEXTURE_SIZE:          *params = GLOVE_MAX_CUBE_MAP_TEXTURE_SIZE; break;
     case GL_MAX_VIEWPORT_DIMS:                  params[0] = GLOVE_MAX_TEXTURE_SIZE;
                                                 params[1] = GLOVE_MAX_TEXTURE_SIZE; break;
+    //case GL_MAX_DRAW_BUFFERS:
+    case GL_MAX_DRAW_BUFFERS_EXT: *params = GLOVE_MAX_DRAW_BUFFERS; break;
+    //case GL_MAX_COLOR_ATTACHMENTS:
+    case GL_MAX_COLOR_ATTACHMENTS_EXT: *params = GLOVE_MAX_COLOR_ATTACHMENTS; break;
+    
     case GL_FRAMEBUFFER_BINDING:                *params = mStateManager.GetActiveObjectsState()->GetActiveFramebufferObjectID(); break;
     case GL_RENDERBUFFER_BINDING:               *params = mStateManager.GetActiveObjectsState()->GetActiveRenderbufferObjectID(); break;
     case GL_CURRENT_PROGRAM:                    *params = GetProgramId(mStateManager.GetActiveShaderProgram()); break;

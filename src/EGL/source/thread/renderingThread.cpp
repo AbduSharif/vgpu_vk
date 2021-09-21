@@ -118,7 +118,8 @@ RenderingThread::ReleaseThread(void)
 
     NOT_IMPLEMENTED();
 
-    return EGL_FALSE;
+    //return EGL_FALSE;
+    return EGL_TRUE;
 }
 
 EGLContext
@@ -127,9 +128,15 @@ RenderingThread::GetCurrentContext(void)
     FUN_ENTRY(EGL_LOG_TRACE);
 
     switch(mCurrentAPI) {
-        case EGL_OPENGL_ES_API:    return mGLESCurrentContext; break;
-        case EGL_OPENVG_API:       return mVGCurrentContext; break;
-        default:                   return nullptr;
+        case EGL_OPENGL_ES_API:
+        case EGL_OPENGL_API:
+            return mGLESCurrentContext; break;
+        
+        case EGL_OPENVG_API:
+        	return mVGCurrentContext; break;
+        
+        default:
+            return nullptr;
     }
 }
 
@@ -220,7 +227,8 @@ RenderingThread::MakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, E
     }
 
     EGLContext_t *eglContext = static_cast<EGLContext_t *>(ctx);
-    assert(eglContext);
+    printf("EGL: MakeCurrent: ctx = ""%p\n", ctx);
+    //assert(eglContext);
     if(eglContext == nullptr) {
         RecordError(EGL_BAD_CONTEXT);
         return EGL_FALSE;
@@ -239,6 +247,7 @@ RenderingThread::MakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read, E
 
     switch(mCurrentAPI) {
         case EGL_OPENGL_ES_API:
+        case EGL_OPENGL_API:
             mGLESCurrentContext = eglContext;
             break;
         case EGL_OPENVG_API:

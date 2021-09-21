@@ -24,12 +24,13 @@
 #include "context.h"
 #include "utils/VkToGlConverter.h"
 
-static Context *currentContext = nullptr;
+Context *currentContext = nullptr;
 
 Context *GetCurrentContext()
 {
     FUN_ENTRY(GL_LOG_TRACE);
-
+	
+	currentContext = (Context *)getGlThreadSpecific();
     return currentContext;
 }
 
@@ -37,7 +38,8 @@ void SetCurrentContext(Context *ctx)
 {
     FUN_ENTRY(GL_LOG_TRACE);
 
-    currentContext = ctx;
+    //currentContext = ctx;
+    setGlThreadSpecific((void*)ctx);
 }
 
 Context::Context()

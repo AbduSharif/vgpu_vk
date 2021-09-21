@@ -52,6 +52,14 @@
 #endif // __GNUC__
 
 // Code
+#ifndef DEBUG
+#   define NOT_REACHED()                                printf("You shouldn't be here. (function %s at line %d of file %s)\n", __func__, __LINE__, __FILE__)
+#   define NOT_IMPLEMENTED()                            printf("Function %s (line %d of file %s) not implemented yet.\n", __func__, __LINE__, __FILE__)
+#else
+#   define NOT_REACHED()                                assert(0 && "You shouldn't be here.")
+#   define NOT_IMPLEMENTED()                            assert(0 && "Function not implemented yet.")
+#endif // NDEBUG
+/*
 #ifdef NDEBUG
 #   define NOT_REACHED()                                printf("You shouldn't be here. (function %s at line %d of file %s)\n", __func__, __LINE__, __FILE__)
 #   define NOT_IMPLEMENTED()                            printf("Function %s (line %d of file %s) not implemented yet.\n", __func__, __LINE__, __FILE__)
@@ -59,6 +67,7 @@
 #   define NOT_REACHED()                                assert(0 && "You shouldn't be here.")
 #   define NOT_IMPLEMENTED()                            assert(0 && "Function not implemented yet.")
 #endif // NDEBUG
+*/
 
 #define ARRAY_SIZE(array)                               (int)(sizeof(array) / sizeof(array[0]))
 

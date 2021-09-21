@@ -252,7 +252,7 @@ bool Context::ConvertIndexBufferToUint16(const void* srcData, size_t elementCoun
 
     bool validatedBuffer = ConvertBuffer<uint8_t, uint16_t>(srcData, converted_indices_u16, elementCount);
     if(validatedBuffer) {
-        converted_indices_u16 = converted_indices_u16;
+        //converted_indices_u16 = converted_indices_u16;
         validatedBuffer = AllocateTempIndexBuffer(converted_indices_u16, actual_size, ibo);
     }
     delete[] converted_indices_u16;

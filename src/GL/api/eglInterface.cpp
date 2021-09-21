@@ -37,7 +37,19 @@ void                  set_next_image_index(api_context_t api_context, uint32_t i
 void                  finish(api_context_t api_context);
 
 static void           FillInVkInterface(vkContext_t* vkContext);
-
+/*
+rendering_api_interface_t GLES2Interface {
+    .state = gles2_state,
+    .init_API_cb = init_API,
+    .terminate_API_cb = terminate_API,
+    .create_context_cb = create_context,
+    .set_write_surface_cb = set_write_surface,
+    .set_read_surface_cb = set_read_surface,
+    .delete_context_cb = delete_context,
+    .set_next_image_index_cb = set_next_image_index,
+    .finish_cb = finish
+};
+*/
 rendering_api_interface_t GLES2Interface = {
     gles2_state,
     init_API,
@@ -83,8 +95,8 @@ void terminate_API()
 api_context_t create_context()
 {
     FUN_ENTRY(GL_LOG_DEBUG);
-
     Context *ctx = new Context();
+    printf("EGLInterface: create_context(): ctx = ""%p\n", ctx);
     return ctx;
 }
 
@@ -94,8 +106,9 @@ void set_write_surface(api_context_t api_context, EGLSurfaceInterface *eglSurfac
 
     Context *ctx = reinterpret_cast<Context *>(api_context);
     ctx->SetWriteSurface(eglSurfaceInterface);
-
+	printf("EGLInterface: SetCurrentContext(ctx): ctx = ""%p\n", ctx);
     SetCurrentContext(ctx);
+    printf("EGLInterface: GetCurrentContext(): ctx = ""%p\n", GetCurrentContext());
 }
 
 void set_read_surface(api_context_t api_context, EGLSurfaceInterface *eglSurfaceInterface)
@@ -104,8 +117,9 @@ void set_read_surface(api_context_t api_context, EGLSurfaceInterface *eglSurface
 
     Context *ctx = reinterpret_cast<Context *>(api_context);
     ctx->SetReadSurface(eglSurfaceInterface);
-
+	printf("EGLInterface: SetCurrentContext(ctx): ctx = ""%p\n", ctx);
     SetCurrentContext(ctx);
+    printf("EGLInterface: GetCurrentContext(): ctx = ""%p\n", GetCurrentContext());
 }
 
 void delete_context(api_context_t api_context)
